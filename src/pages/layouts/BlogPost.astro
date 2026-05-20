@@ -1,0 +1,64 @@
+---
+import "../../styles/global.css";
+
+const { frontmatter } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{frontmatter.title} — notgustadev</title>
+  </head>
+
+  <body class="blog-page">
+    <div class="blog-static-bg" aria-hidden="true"></div>
+    <div class="soft-layer"></div>
+
+    <div class="article-layout">
+      <header>
+        <a class="brand" href="/">
+          <strong>Gustavo</strong> Coelho
+        </a>
+
+        <nav aria-label="Main navigation">
+          <a href="/">about</a>
+          <a class="active" href="/blog">blog</a>
+          <a href="/projects">projects</a>
+          <a href="mailto:hello@example.com">email</a>
+        </nav>
+      </header>
+
+      <main class="article-main-v2">
+        <a class="article-back" href="/blog">← Back to blog</a>
+
+        <article>
+          <header class="article-header">
+            <h1>{frontmatter.title}</h1>
+
+            <div class="blog-post-meta">
+              <span>{frontmatter.readTime}</span>
+              <span>·</span>
+              <time datetime={frontmatter.date}>
+                {new Date(frontmatter.date).toLocaleDateString("en-US", {
+                  month: "long",
+                  day: "2-digit",
+                  year: "numeric",
+                })}
+              </time>
+            </div>
+          </header>
+
+          <div class="article-content">
+            <slot />
+          </div>
+        </article>
+      </main>
+
+      <footer>
+        <span>© 2026 Gustavo Coelho</span>
+      </footer>
+    </div>
+  </body>
+</html>

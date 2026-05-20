@@ -1,0 +1,118 @@
+---
+import "../styles/global.css";
+
+const modules = import.meta.glob("./blog/*.md", { eager: true });
+
+const latestPosts = Object.entries(modules)
+  .map(([path, post]) => {
+    const slug = path.split("/").pop()?.replace(".md", "");
+
+    return {
+      slug,
+      title: post.frontmatter.title,
+      date: post.frontmatter.date,
+    };
+  })
+  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+  .slice(0, 3);
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.png" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>not gusta</title>
+  </head>
+
+  <body>
+    <pre
+      id="ascii-bg"
+      role="img"
+      aria-label="Animated blue and white ascii background"
+    ></pre>
+
+    <div class="soft-layer"></div>
+
+    <div class="page">
+      <header>
+        <a class="brand" href="/">
+          <strong>not</strong> gustadev
+        </a>
+
+        <nav aria-label="Main navigation">
+          <a class="active" href="/">about</a>
+          <a href="/blog">blog</a>
+          <a href="#">projects</a>
+        </nav>
+      </header>
+
+      <main>
+        <section class="intro">
+          <h1>Hi, I'm Gustavo.</h1>
+
+          <p class="description">
+            I build software, and internet experiments.
+            <span>
+              This is my personal space for work, notes, and things I'm learning.
+            </span>
+          </p>
+
+          <div class="links" aria-label="Social links">
+            <a href="https://github.com/gust4vocodes" target="_blank" rel="noreferrer">github</a>
+          <a href="https://www.linkedin.com/in/gustavocode/" target="_blank" rel="noreferrer">linkedin</a>
+          <a href="https://x.com/notgustadev" target="_blank" rel="noreferrer">x</a>
+          </div>
+        </section>
+
+        <div class="side-column" aria-label="Projects and latest posts">
+			<aside class="side" aria-label="Featured projects">
+				<p class="side-title">Projects</p>
+
+				<ul class="project-list">
+				<li>
+					<a href="#">FatumCap - Data agregator</a>
+					<span>Data from all prediction markets.</span>
+				</li>
+
+				<li>
+					<a href="#">Tomato Score</a>
+					<span>Fun experiment trying to predict the Tomato Score</span>
+				</li>
+
+				<li>
+					<a href="#">more</a>
+				</li>
+				</ul>
+			</aside>
+
+			<aside class="side" aria-label="Latest posts">
+				<p class="side-title">Latest posts</p>
+
+				<div class="posts">
+				{latestPosts.map((post) => (
+					<article class="post">
+					<a href={`/blog/${post.slug}`}>{post.title}</a>
+
+					<time datetime={post.date}>
+						{new Date(post.date).toLocaleDateString("en-US", {
+						month: "short",
+						day: "2-digit",
+						year: "numeric",
+						})}
+					</time>
+					</article>
+				))}
+				</div>
+			</aside>
+		</div>
+      </main>
+
+      <footer>
+        <span>© 2026 Gustavo Coelho</span>
+      </footer>
+    </div>
+
+    <script src="/src/scripts/ascii-bg.js"></script>
+  </body>
+</html>

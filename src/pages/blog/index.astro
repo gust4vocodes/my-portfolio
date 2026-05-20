@@ -1,0 +1,101 @@
+---
+import "../../styles/global.css";
+
+const modules = import.meta.glob("./*.md", { eager: true });
+
+const posts = Object.entries(modules)
+  .map(([path, post]) => {
+    const slug = path.split("/").pop()?.replace(".md", "");
+
+    return {
+      slug,
+      title: post.frontmatter.title,
+      date: post.frontmatter.date,
+      year: post.frontmatter.year,
+      readTime: post.frontmatter.readTime,
+      tags: post.frontmatter.tags ?? [],
+      category: post.frontmatter.category,
+    };
+  })
+  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blog — notgustadev</title>
+  </head>
+
+  <body class="blog-page">
+    <div class="blog-static-bg" aria-hidden="true"></div>
+    <div class="soft-layer"></div>
+
+    <div class="blog-shell">
+      <header>
+        <a class="brand" href="/">
+          <strong>Gustavo</strong> Coelho
+        </a>
+
+        <nav aria-label="Main navigation">
+          <a href="/">about</a>
+          <a class="active" href="/blog">blog</a>
+          <a href="#">projects</a>
+        </nav>
+      </header>
+
+      <main class="blog-main-v2">
+        <section class="blog-index-header">
+          <h1>blog</h1>
+
+          <p class="blog-index-description">
+            Notes, experiments, technical thoughts, and things I am learning.
+          </p>
+
+          <div class="blog-tags">
+            <span># software</span>
+            <span># projects</span>
+            <span># internet</span>
+          </div>
+        </section>
+
+        <section class="blog-post-list" aria-label="Blog posts">
+          {posts.map((post) => (
+            <article class="blog-post-preview">
+              <a href={`/blog/${post.slug}`}>
+                <h2>{post.title}</h2>
+
+                <div class="blog-post-meta">
+                  <span>{post.readTime}</span>
+                  <span>·</span>
+                  <time datetime={post.date}>
+                    {new Date(post.date).toLocaleDateString("en-US", {
+                      month: "long",
+                      day: "2-digit",
+                      year: "numeric",
+                    })}
+                  </time>
+                </div>
+
+                <div class="blog-post-tags">
+                  <span>{post.year}</span>
+                  <span>·</span>
+                  {post.tags.map((tag) => (
+                    <span>#{tag}</span>
+                  ))}
+                  <span>·</span>
+                  <span>{post.category}</span>
+                </div>
+              </a>
+            </article>
+          ))}
+        </section>
+      </main>
+
+      <footer>
+        <span>© 2026 Gustavo Coelho</span>
+      </footer>
+    </div>
+  </body>
+</html>

@@ -1,5 +1,5 @@
 ---
-layout: "/src/pages/layouts/BlogPost.astro"
+layout: "../../layouts/BlogPost.astro"
 title: "Hello world."
 date: "2026-05-20"
 year: "2026"

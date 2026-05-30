@@ -21,7 +21,7 @@ The goal was to create a fast observation layer: a place where I could quickly s
 
 
 <figure>
-  <img src="/public/images/fatumdashboard.png" alt="FatumCap dashboard" />
+  <img src="/images/fatumdashboard.png" alt="FatumCap dashboard" />
   <figcaption>FatumCap dashboard.</figcaption>
 </figure>
 

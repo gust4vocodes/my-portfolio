@@ -1,0 +1,97 @@
+---
+import "../../styles/global.css";
+
+const modules = import.meta.glob("./*.md", { eager: true });
+
+const projects = Object.entries(modules)
+  .map(([path, project]) => {
+    const slug = path.split("/").pop()?.replace(".md", "");
+
+    return {
+      slug,
+      title: project.frontmatter.title,
+      description: project.frontmatter.description,
+      year: project.frontmatter.year,
+      type: project.frontmatter.type,
+      stack: project.frontmatter.stack,
+      status: project.frontmatter.status,
+      order: project.frontmatter.order ?? 999,
+    };
+  })
+  .sort((a, b) => a.order - b.order)
+  .slice(0, 12);
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Projects — Gustavo Coelho</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+
+  <body class="blog-page">
+    <div class="blog-static-bg" aria-hidden="true"></div>
+    <div class="soft-layer"></div>
+
+    <div class="blog-shell">
+      <header>
+        <a class="brand" href="/">
+          <strong>not</strong>gusta
+        </a>
+
+        <nav aria-label="Main navigation">
+          <a href="/">about</a>
+          <a href="/blog">blog</a>
+          <a class="active" href="/projects">projects</a>
+        </nav>
+      </header>
+
+      <main class="blog-main-v2">
+        <section class="blog-index-header">
+          <h1>projects</h1>
+
+          <p class="blog-index-description">
+            Selected software, experiments, tools, and things I am building.
+          </p>
+
+          <div class="blog-tags">
+            <span># software</span>
+            <span># tools</span>
+            <span># experiments</span>
+          </div>
+        </section>
+
+        <section class="blog-post-list" aria-label="Projects">
+          {projects.map((project) => (
+            <article class="blog-post-preview">
+              <a href={`/projects/${project.slug}`}>
+                <h2>{project.title}</h2>
+
+                <p class="project-preview-description">
+                  {project.description}
+                </p>
+
+                <div class="blog-post-meta">
+                  <span>{project.year}</span>
+                  <span>·</span>
+                  <span>{project.type}</span>
+                  <span>·</span>
+                  <span>{project.status}</span>
+                </div>
+
+                <div class="blog-post-tags">
+                  <span>{project.stack}</span>
+                </div>
+              </a>
+            </article>
+          ))}
+        </section>
+      </main>
+
+      <footer>
+        <span>© 2026 Gustavo Coelho</span>
+      </footer>
+    </div>
+  </body>
+</html>

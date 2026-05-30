@@ -1,0 +1,61 @@
+---
+import "../styles/global.css";
+
+const { frontmatter } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{frontmatter.title} — Gustavo Coelho</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+
+  <body class="blog-page">
+    <div class="blog-static-bg" aria-hidden="true"></div>
+    <div class="soft-layer"></div>
+
+    <div class="article-layout">
+      <header>
+        <a class="brand" href="/">
+          <strong>not</strong> gustadev
+        </a>
+
+        <nav aria-label="Main navigation">
+          <a href="/">about</a>
+          <a href="/blog">blog</a>
+          <a class="active" href="/projects">projects</a>
+        </nav>
+      </header>
+
+      <main class="article-main-v2">
+        <a class="article-back" href="/projects">← Back to projects</a>
+
+        <article>
+          <header class="article-header">
+            <p class="project-status">{frontmatter.status}</p>
+
+            <h1>{frontmatter.title}</h1>
+
+            <div class="blog-post-meta">
+              <span>{frontmatter.year}</span>
+              <span>·</span>
+              <span>{frontmatter.type}</span>
+              <span>·</span>
+              <span>{frontmatter.stack}</span>
+            </div>
+          </header>
+
+          <div class="article-content">
+            <slot />
+          </div>
+        </article>
+      </main>
+
+      <footer>
+        <span>© 2026 Gustavo Coelho</span>
+      </footer>
+    </div>
+  </body>
+</html>

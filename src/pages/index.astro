@@ -1,9 +1,10 @@
 ---
 import "../styles/global.css";
 
-const modules = import.meta.glob("./blog/*.md", { eager: true });
+const blogModules = import.meta.glob("./blog/*.md", { eager: true });
+const projectModules = import.meta.glob("./projects/*.md", { eager: true });
 
-const latestPosts = Object.entries(modules)
+const latestPosts = Object.entries(blogModules)
   .map(([path, post]) => {
     const slug = path.split("/").pop()?.replace(".md", "");
 
@@ -14,6 +15,21 @@ const latestPosts = Object.entries(modules)
     };
   })
   .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+  .slice(0, 3);
+
+const latestProjects = Object.entries(projectModules)
+  .map(([path, project]) => {
+    const slug = path.split("/").pop()?.replace(".md", "");
+
+    return {
+      slug,
+      title: project.frontmatter.title,
+      description: project.frontmatter.description,
+      year: project.frontmatter.year,
+      order: project.frontmatter.order ?? 999,
+    };
+  })
+  .sort((a, b) => a.order - b.order)
   .slice(0, 3);
 ---
 
@@ -46,7 +62,7 @@ const latestPosts = Object.entries(modules)
         <nav aria-label="Main navigation">
           <a class="active" href="/">about</a>
           <a href="/blog">blog</a>
-          <a href="#">projects</a>
+          <a href="/projects">projects</a>
         </nav>
       </header>
 
@@ -73,20 +89,14 @@ const latestPosts = Object.entries(modules)
 				<p class="side-title">Projects</p>
 
 				<ul class="project-list">
-				<li>
-					<a href="#">FatumCap - Data agregator</a>
-					<span>Data from all prediction markets.</span>
-				</li>
-
-				<li>
-					<a href="#">Tomato Score</a>
-					<span>Fun experiment trying to predict the Tomato Score</span>
-				</li>
-
-				<li>
-					<a href="#">more</a>
-				</li>
-				</ul>
+  {latestProjects.map((project) => (
+    <li>
+      <a href={`/projects/${project.slug}`}>{project.title}</a>
+      <span>{project.description}</span>
+    </li>
+  ))}
+  
+</ul>
 			</aside>
 
 			<aside class="side" aria-label="Latest posts">
